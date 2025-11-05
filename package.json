@@ -1,0 +1,22 @@
+
+{
+  "name": "clinic-form-nuxt4-vuetify",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "nuxt": "^4.0.0",
+    "vuetify": "^3.10.8"
+  },
+  "devDependencies": {
+    "sass": "^1.77.8",
+    "vite-plugin-vuetify": "^2.1.2"
+  }
+}
