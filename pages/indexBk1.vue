@@ -2,7 +2,7 @@
   <v-app>
     <!-- App Bar -->
     <v-app-bar color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表8</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表7</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
@@ -322,19 +322,9 @@ const frequencyOptions = ['每天', '2~3天一次', '1週一次', '偶爾一次'
 const whenOptions = ['休息時', '運動時', '睡覺時']
 const episodeUnits = ['秒', '分', '小時', '天']
 
-// 過去病史/家族病史選項（可自行擴充）
-const sickHistory1 = [
-  '高血壓', '心衰竭', '高血脂', '心肌梗塞', '冠狀動脈疾病',
-  '瓣膜性心臟病', '週邊動脈阻塞', '心律不整', '心臟節律器', '心臟去顫器',
-  '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
-  '消化性潰瘍', '胃食道逆流', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
-]
-const sickHistory2 = [
-  '心律不整', '慢性肺部疾病', 'B/C 肝', '惡性腫瘤', '其他慢性病',
-]
-const FamilyHistory = [
-  '中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤',
-]
+const sickHistory1 = ['高血壓', '心衰竭', '高血脂', '心肌梗塞']
+const sickHistory2 = ['慢性肺部疾病', '惡性腫瘤']
+const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
 
 /* === 驗證 === */
 const oneDecimal = (v:any)=>v===''||v==null||/^(\d+|\d+\.\d)$/.test(String(v))||'僅允許到小數一位'
