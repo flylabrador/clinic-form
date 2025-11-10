@@ -105,6 +105,7 @@ declare global {
   const useHead: typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/head').useHead
   const useHeadSafe: typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/head').useHeadSafe
   const useHydration: typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/hydrate').useHydration
+  const useI18n: typeof import('../../composables/useI18n').useI18n
   const useId: typeof import('../../node_modules/.pnpm/vue@3.5.22/node_modules/vue').useId
   const useLazyAsyncData: typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/asyncData').useLazyAsyncData
   const useLazyFetch: typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/fetch').useLazyFetch
@@ -290,6 +291,7 @@ declare module 'vue' {
     readonly useHead: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/head')['useHead']>
     readonly useHeadSafe: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/head')['useHeadSafe']>
     readonly useHydration: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/hydrate')['useHydration']>
+    readonly useI18n: UnwrapRef<typeof import('../../composables/useI18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('../../node_modules/.pnpm/vue@3.5.22/node_modules/vue')['useId']>
     readonly useLazyAsyncData: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/asyncData')['useLazyAsyncData']>
     readonly useLazyFetch: UnwrapRef<typeof import('../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/composables/fetch')['useLazyFetch']>

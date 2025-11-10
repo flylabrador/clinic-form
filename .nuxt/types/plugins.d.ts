@@ -21,6 +21,7 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/.pnpm/@nuxt+devtools@2.7.0_vite@7.2.0_jiti@2.6.1_sass@1.93.3_terser@5.44.1_yaml@2.8.1__vue@3.5.22/node_modules/@nuxt/devtools/dist/runtime/plugins/devtools.client.js")> &
   InjectionType<typeof import("../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/plugins/warn.dev.server.js")> &
   InjectionType<typeof import("../../node_modules/.pnpm/nuxt@4.2.0_@parcel+watcher@2.5.1_@vue+compiler-sfc@3.5.22_db0@0.3.4_ioredis@5.8.2_magic_ec9b901ac4bd3f30751506f9ab8b45cf/node_modules/nuxt/dist/app/plugins/check-if-layout-used.js")> &
+  InjectionType<typeof import("../../plugins/theme.client")> &
   InjectionType<typeof import("../../plugins/vuetify")>
 
 declare module '#app' {

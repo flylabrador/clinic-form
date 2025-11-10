@@ -2,7 +2,7 @@
   <v-app>
     <!-- 置頂 App Bar：加上 app 才不會遮住內容 -->
     <v-app-bar app color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表A</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表9</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
@@ -22,7 +22,7 @@
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-card elevation="2" title="初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200Hg ，請至急診就醫！">
+            <v-card elevation="2" title="基本資料與病史">
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <!-- 基本資料（可收合） -->
@@ -89,7 +89,7 @@
                               step="0.1"
                               suffix="cm"
                               variant="outlined"
-                              :rules="[positive, oneDecimal]"
+                              :rules="[oneDecimal, positive]"
                             />
                           </v-col>
                           <v-col cols="12" sm="4">
@@ -100,7 +100,7 @@
                               step="0.1"
                               suffix="kg"
                               variant="outlined"
-                              :rules="[positive, oneDecimal]"
+                              :rules="[oneDecimal, positive]"
                             />
                           </v-col>
                           <v-col cols="12" sm="4">
@@ -400,7 +400,7 @@
                             type="number"
                             step="0.1"
                             variant="outlined"
-                            :rules="[requiredIf('smokingStatus','yes'), positive, oneDecimal]"
+                            :rules="[requiredIf('smokingStatus','yes'), oneDecimal, positive]"
                           />
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -425,7 +425,7 @@
                         type="number"
                         step="0.1"
                         variant="outlined"
-                        :rules="[requiredIf('smokingStatus','quit'), positive, oneDecimal]"
+                        :rules="[requiredIf('smokingStatus','quit'), oneDecimal, positive]"
                       />
                     </div>
                   </v-expand-transition>
@@ -584,14 +584,9 @@ const user = ref<any>({
 /* 下拉選項（通用） */
 const durationUnits = ['天', '週', '月', '年']
 const frequencyOptions = ['每天', '2~3天一次', '1週一次', '偶爾一次']
-const sickHistory1 = [
-  '高血壓', '心衰竭', '高血脂', '心肌梗塞', '冠狀動脈疾病',
-  '瓣膜性心臟病', '週邊動脈阻塞', '心律不整', '心臟節律器', '心臟去顫器',
-  '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
-  '消化性潰瘍', '胃食道逆流', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
-]
-const sickHistory2 = ['心律不整', '慢性肺部疾病', 'B型肝炎', 'C型肝炎', '惡性腫瘤', '其他慢性病']
-const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
+const sickHistory1 = ['高血壓','心衰竭','高血脂','心肌梗塞','冠狀動脈疾病','糖尿病']
+const sickHistory2 = ['B型肝炎','C型肝炎','惡性腫瘤','慢性腎衰竭','COPD','氣喘']
+const FamilyHistory = ['中風','冠狀動脈疾病/心肌梗塞','猝死','惡性腫瘤']
 
 /* 驗證規則 */
 const oneDecimal = (v:any)=>v===''||v==null||/^(\d+|\d+\.\d)$/.test(String(v))||'僅允許到小數一位'

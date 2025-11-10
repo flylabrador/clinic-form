@@ -1861,10 +1861,12 @@ async function getIslandContext(event) {
   return ctx;
 }
 
+const _lazy_wqEMaj = () => Promise.resolve().then(function () { return intake_post$1; });
 const _lazy_QFZjZq = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _5a5xMl, lazy: false, middleware: true, method: undefined },
+  { route: '/api/intake', handler: _lazy_wqEMaj, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_QFZjZq, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_QFZjZq, lazy: true, middleware: false, method: undefined }
@@ -2196,6 +2198,26 @@ const styles = {};
 const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
   default: styles
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const intake_post = defineEventHandler(async (event) => {
+  try {
+    const body = await readBody(event);
+    if (!(body == null ? void 0 : body.name)) {
+      setResponseStatus(event, 400);
+      return { ok: false, message: "Name is required" };
+    }
+    await new Promise((r) => setTimeout(r, 300));
+    return { ok: true, message: "received", at: (/* @__PURE__ */ new Date()).toISOString(), echo: body };
+  } catch (err) {
+    setResponseStatus(event, 500);
+    return { ok: false, message: (err == null ? void 0 : err.message) || "Server error" };
+  }
+});
+
+const intake_post$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: intake_post
 }, Symbol.toStringTag, { value: 'Module' }));
 
 function renderPayloadResponse(ssrContext) {

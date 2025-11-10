@@ -2,7 +2,7 @@
   <v-app>
     <!-- 置頂 App Bar：加上 app 才不會遮住內容 -->
     <v-app-bar app color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表A</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表9</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
@@ -22,7 +22,7 @@
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-card elevation="2" title="初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200Hg ，請至急診就醫！">
+            <v-card elevation="2" title="基本資料與病史">
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <!-- 基本資料（可收合） -->
@@ -89,7 +89,7 @@
                               step="0.1"
                               suffix="cm"
                               variant="outlined"
-                              :rules="[positive, oneDecimal]"
+                              :rules="[oneDecimal, positive]"
                             />
                           </v-col>
                           <v-col cols="12" sm="4">
@@ -100,7 +100,7 @@
                               step="0.1"
                               suffix="kg"
                               variant="outlined"
-                              :rules="[positive, oneDecimal]"
+                              :rules="[oneDecimal, positive]"
                             />
                           </v-col>
                           <v-col cols="12" sm="4">
@@ -317,7 +317,7 @@
                     </v-expansion-panel>
                   </v-expansion-panels>
 
-                  <!-- ====== 手術史 / 藥物過敏 ====== -->
+                  <!-- ====== 手術史 / 藥物過敏（在選「有」時必填） ====== -->
                   <v-divider class="my-4" />
 
                   <!-- 過去手術史 -->
@@ -382,96 +382,7 @@
                     </v-col>
                   </v-row>
 
-                  <!-- 抽菸（有條件顯示欄位） -->
-                  <v-label class="mb-2 d-inline-block mt-2">抽菸</v-label>
-                  <v-radio-group v-model="user.smokingStatus" inline>
-                    <v-radio label="無" value="none" />
-                    <v-radio label="有" value="yes" />
-                    <v-radio label="已戒菸" value="quit" />
-                  </v-radio-group>
-
-                  <v-expand-transition>
-                    <div v-if="user.smokingStatus === 'yes'">
-                      <v-row>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model.number="user.smokeYears"
-                            label="菸齡（年）"
-                            type="number"
-                            step="0.1"
-                            variant="outlined"
-                            :rules="[requiredIf('smokingStatus','yes'), positive, oneDecimal]"
-                          />
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model.number="user.smokePerDay"
-                            label="每天支數（支）"
-                            type="number"
-                            inputmode="numeric"
-                            variant="outlined"
-                            :rules="[requiredIf('smokingStatus','yes'), intPositive]"
-                          />
-                        </v-col>
-                      </v-row>
-                    </div>
-                  </v-expand-transition>
-
-                  <v-expand-transition>
-                    <div v-if="user.smokingStatus === 'quit'">
-                      <v-text-field
-                        v-model.number="user.smokeYears"
-                        label="菸齡（年）"
-                        type="number"
-                        step="0.1"
-                        variant="outlined"
-                        :rules="[requiredIf('smokingStatus','quit'), positive, oneDecimal]"
-                      />
-                    </div>
-                  </v-expand-transition>
-
-                  <!-- 喝酒（有條件顯示欄位） -->
-                  <v-label class="mb-2 d-inline-block mt-4">喝酒</v-label>
-                  <v-radio-group v-model="user.alcoholStatus" inline>
-                    <v-radio label="無" value="none" />
-                    <v-radio label="有" value="yes" />
-                  </v-radio-group>
-
-                  <v-expand-transition>
-                    <div v-if="user.alcoholStatus === 'yes'">
-                      <v-row>
-                        <v-col cols="12" sm="4">
-                          <v-text-field
-                            v-model.number="user.alcoholAmountCc"
-                            label="喝多少（cc）"
-                            type="number"
-                            variant="outlined"
-                            :rules="[requiredIf('alcoholStatus','yes'), positive]"
-                          />
-                        </v-col>
-                        <v-col cols="12" sm="4">
-                          <v-text-field
-                            v-model.number="user.alcoholFrequencyDays"
-                            label="多久喝一次（天）"
-                            type="number"
-                            variant="outlined"
-                            :rules="[requiredIf('alcoholStatus','yes'), positive]"
-                          />
-                        </v-col>
-                        <v-col cols="12" sm="4">
-                          <v-text-field
-                            v-model="user.alcoholDrinkName"
-                            label="酒名"
-                            variant="outlined"
-                            :rules="[requiredIf('alcoholStatus','yes')]"
-                            clearable
-                          />
-                        </v-col>
-                      </v-row>
-                    </div>
-                  </v-expand-transition>
-
-                  <v-btn type="submit" color="primary" class="mt-6">送出</v-btn>
+                  <v-btn type="submit" color="primary" class="mt-4">送出</v-btn>
                 </v-form>
               </v-card-text>
             </v-card>
@@ -521,11 +432,11 @@ const palpitationOptions = ['跳太快', '跳太慢', '不規律', '跳太用力
 const dizzinessOptions = ['又暈又眩', '頭重重的（無旋轉/無晃動感）', '合併昏倒/快昏倒/失去意識']
 const edemaOptions = ['全身', '單腳', '雙腳']
 
-/* 生活背景下拉資料 */
+/* 新增：生活背景下拉資料 */
 const livingStatusItems = ['獨居', '與家人同住']
 const educationLevels = ['無', '小學', '國中', '高中', '專科', '大學', '碩士', '博士']
 
-/* 使用者資料（含主訴/病史/手術史/藥物過敏/生活背景/抽菸/喝酒） */
+/* 使用者資料（含手術史/藥物過敏/生活背景） */
 const user = ref<any>({
   name: '',
   visitNumber: null,
@@ -565,33 +476,17 @@ const user = ref<any>({
   drugAllergy: 'none',
   allergyName: '',
 
-  // 生活背景
+  // 生活背景（新增）
   livingStatus: null,       // '獨居' | '與家人同住'
-  educationLevel: null,     // '無' | ... | '博士'
-
-  // 抽菸
-  smokingStatus: 'none',    // 'none' | 'yes' | 'quit'
-  smokeYears: null,         // number (>0, 一位小數)
-  smokePerDay: null,        // int (>0)
-
-  // 喝酒
-  alcoholStatus: 'none',    // 'none' | 'yes'
-  alcoholAmountCc: null,    // number (>0)
-  alcoholFrequencyDays: null, // number (>0)
-  alcoholDrinkName: '',     // string
+  educationLevel: null,     // '無' | '小學' | ... | '博士'
 })
 
-/* 下拉選項（通用） */
+/* 下拉選項 */
 const durationUnits = ['天', '週', '月', '年']
 const frequencyOptions = ['每天', '2~3天一次', '1週一次', '偶爾一次']
-const sickHistory1 = [
-  '高血壓', '心衰竭', '高血脂', '心肌梗塞', '冠狀動脈疾病',
-  '瓣膜性心臟病', '週邊動脈阻塞', '心律不整', '心臟節律器', '心臟去顫器',
-  '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
-  '消化性潰瘍', '胃食道逆流', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
-]
-const sickHistory2 = ['心律不整', '慢性肺部疾病', 'B型肝炎', 'C型肝炎', '惡性腫瘤', '其他慢性病']
-const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
+const sickHistory1 = ['高血壓','心衰竭','高血脂','心肌梗塞','冠狀動脈疾病','糖尿病']
+const sickHistory2 = ['B型肝炎','C型肝炎','惡性腫瘤','慢性腎衰竭','COPD','氣喘']
+const FamilyHistory = ['中風','冠狀動脈疾病/心肌梗塞','猝死','惡性腫瘤']
 
 /* 驗證規則 */
 const oneDecimal = (v:any)=>v===''||v==null||/^(\d+|\d+\.\d)$/.test(String(v))||'僅允許到小數一位'
@@ -608,10 +503,9 @@ const ageRules  = [
          : (+v>0) ? true : '需大於 0'
 ]
 
-/* 只有在特定條件時才必填（含手術史/藥物過敏/抽菸/喝酒） */
+/* 只有在特定條件時才必填（手術史/藥物過敏） */
 const requiredIf = (field:keyof typeof user.value, expected:any) => (v:any) => {
   if (user.value[field] === expected) {
-    if (Array.isArray(v)) return v.length > 0 || '此欄位為必填'
     return (v !== '' && v != null) || '此欄位為必填'
   }
   return true
@@ -626,21 +520,6 @@ watch(()=>[user.value.heightCm,user.value.weightKg],([h,w])=>{
 /* 當血壓用藥選無時，清空藥名 */
 watch(()=>user.value.hypertensionMedicationAdherence, val=>{
   if(val==='none') user.value.hypertensionMedNames = ''
-})
-
-/* 抽菸：切換狀態時清理不需要的欄位（避免殘值） */
-watch(()=>user.value.smokingStatus, s=>{
-  if(s==='none'){ user.value.smokeYears=null; user.value.smokePerDay=null }
-  if(s==='quit'){ user.value.smokePerDay=null } // quit 不需要每天支數
-})
-
-/* 喝酒：切換無時清空欄位 */
-watch(()=>user.value.alcoholStatus, s=>{
-  if(s==='none'){
-    user.value.alcoholAmountCc=null
-    user.value.alcoholFrequencyDays=null
-    user.value.alcoholDrinkName=''
-  }
 })
 
 function submitForm(){
