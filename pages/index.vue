@@ -2,7 +2,7 @@
   <v-app>
     <!-- 置頂 App Bar：加上 app 才不會遮住內容 -->
     <v-app-bar app color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表C</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表1</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
