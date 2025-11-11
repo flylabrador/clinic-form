@@ -2,7 +2,7 @@
   <v-app>
     <!-- 置頂 App Bar：加上 app 才不會遮住內容 -->
     <v-app-bar app color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表A</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表B</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
@@ -22,7 +22,7 @@
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-card elevation="2" title="初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200Hg ，請至急診就醫！">
+            <v-card elevation="2" title="初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200mmHg，請至急診就醫！">
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <!-- 基本資料（可收合） -->
