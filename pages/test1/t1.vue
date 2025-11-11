@@ -2,6 +2,8 @@
   <v-responsive class="border rounded" max-height="300">
     <v-app :theme="theme">
       <v-app-bar class="px-3">
+
+      <v-app-bar-title>AppBarTitle</v-app-bar-title>
         <v-spacer></v-spacer>
 
         <v-btn

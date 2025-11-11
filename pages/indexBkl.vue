@@ -18,16 +18,20 @@
     </v-navigation-drawer>
 
     <!-- 主內容 -->
-    <v-main class="pa-4">
+    <v-main>
       <v-container>
         <v-row>
           <v-col cols="12">
-            <v-card elevation="2" title="初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200mmHg，請至急診就醫！">
+            <v-card elevation="2">
+                <v-card-title class="text-red font-weight-bold text-center">
+                    初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200mmHg，請至急診就醫！
+                </v-card-title>
+
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <!-- 基本資料（可收合） -->
                   <v-expansion-panels v-model="panelsBasic" class="mb-6">
-                    <v-expansion-panel elevation="1">
+                    <v-expansion-panel elevation="3">
                       <v-expansion-panel-title>
                         <span class="text-subtitle-1">基本資料</span>
                       </v-expansion-panel-title>
