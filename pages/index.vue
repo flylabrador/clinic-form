@@ -2,7 +2,7 @@
   <v-app>
     <!-- 置頂 App Bar：加上 app 才不會遮住內容 -->
     <v-app-bar app color="primary" flat>
-      <v-app-bar-title>心臟內科初診病人問診表1</v-app-bar-title>
+      <v-app-bar-title>心臟內科初診病人問診表D</v-app-bar-title>
       <v-spacer />
       <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       <v-btn icon="mdi-menu" @click="drawer = !drawer" />
@@ -301,12 +301,28 @@
                           label="過去病史1（請進入勾選）"
                           chips multiple variant="outlined"
                         />
+
+                        <!-- 過去病史2 + 勾選後逐項補充 -->
                         <v-autocomplete
                           v-model="user.tags2"
                           :items="sickHistory2"
                           label="過去病史2（請進入勾選）"
                           chips multiple variant="outlined"
                         />
+                        <div v-if="user.tags2?.length" class="mt-2">
+                          <v-row v-for="d in user.tags2" :key="d" class="mb-1">
+                            <v-col cols="12">
+                              <v-text-field
+                                v-model="user.tags2Notes[d]"
+                                :label="`${d}（補充說明）`"
+                                variant="outlined"
+                                clearable
+                                :rules="d === '其他慢性病' ? [noteRequiredIfSelected('其他慢性病')] : []"
+                              />
+                            </v-col>
+                          </v-row>
+                        </div>
+
                         <v-autocomplete
                           v-model="user.FamilyHistory"
                           :items="FamilyHistory"
@@ -557,7 +573,10 @@ const user = ref<any>({
   otherDescription: '',
 
   // 病史
-  tags1: [], tags2: [], FamilyHistory: [],
+  tags1: [],
+  tags2: [],
+  tags2Notes: {} as Record<string, string>, // ★ 新增：過去病史2逐項補充
+  FamilyHistory: [],
 
   // 手術史 / 藥物過敏
   opHistory: 'none',
@@ -588,7 +607,7 @@ const sickHistory1 = [
   '高血壓', '心衰竭', '高血脂', '心肌梗塞', '冠狀動脈疾病',
   '瓣膜性心臟病', '週邊動脈阻塞', '心律不整', '心臟節律器', '心臟去顫器',
   '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
-  '消化性潰瘍', '胃食道逆流', 'B型肝炎', 'C型肝炎','肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
+  '消化性潰瘍', '胃食道逆流', 'B型肝炎', 'C型肝炎', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
 ]
 const sickHistory2 = ['心律不整', '慢性肺部疾病',  '惡性腫瘤', '其他慢性病']
 const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
@@ -615,6 +634,13 @@ const requiredIf = (field:keyof typeof user.value, expected:any) => (v:any) => {
     return (v !== '' && v != null) || '此欄位為必填'
   }
   return true
+}
+
+/* 「其他慢性病」若被勾選則補充必填（可自行移除） */
+const noteRequiredIfSelected = (tag: string) => (v: any) => {
+  return user.value.tags2.includes(tag)
+    ? ((v != null && String(v).trim() !== '') || '請補充說明')
+    : true
 }
 
 /* BMI 自動計算 */
@@ -644,7 +670,13 @@ watch(()=>user.value.alcoholStatus, s=>{
 })
 
 function submitForm(){
-  console.log('送出資料：', user.value)
+  // 若後端需要結構化：把 tags2 與備註合併
+  const tags2WithNotes = user.value.tags2.map((name:string)=>({
+    name,
+    note: user.value.tags2Notes[name] || ''
+  }))
+  const payload = { ...user.value, tags2WithNotes }
+  console.log('送出資料：', payload)
   snackbar.value = true
 }
 function toggleTheme(){
