@@ -23,9 +23,9 @@
         <v-row>
           <v-col cols="12">
             <v-card elevation="2">
-              <v-card-title class="text-red font-weight-bold text-center">
+            <v-card-title class="text-red font-weight-bold text-center">
                 初診病人若看診原因為嚴重胸悶、胸痛、血壓大於200mmHg，請至急診就醫！
-              </v-card-title>
+            </v-card-title>
               <v-card-text>
                 <v-form @submit.prevent="submitForm">
                   <!-- 基本資料（可收合） -->
@@ -117,10 +117,10 @@
                           </v-col>
                         </v-row>
 
-                        <!-- 診間血壓 + 心跳 / 脈搏 -->
+                        <!-- 診間血壓 -->
                         <v-label class="mb-2 d-inline-block">診間血壓（mmHg）</v-label>
                         <v-row>
-                          <v-col cols="12" sm="4">
+                          <v-col cols="12" sm="6">
                             <v-text-field
                               v-model.number="user.bpSys"
                               label="收縮壓"
@@ -130,7 +130,7 @@
                               :rules="[intRange(60,260,'請輸入 60–260 的整數')]"
                             />
                           </v-col>
-                          <v-col cols="12" sm="4">
+                          <v-col cols="12" sm="6">
                             <v-text-field
                               v-model.number="user.bpDia"
                               label="舒張壓"
@@ -138,17 +138,6 @@
                               suffix="mmHg"
                               variant="outlined"
                               :rules="[intRange(30,160,'請輸入 30–160 的整數')]"
-                            />
-                          </v-col>
-                          <v-col cols="12" sm="4">
-                            <v-text-field
-                              v-model.number="user.pulseRate"
-                              label="心跳或脈搏數（次/分）"
-                              type="number"
-                              inputmode="numeric"
-                              suffix="次/分"
-                              variant="outlined"
-                              :rules="[intPositive]"
                             />
                           </v-col>
                         </v-row>
@@ -179,78 +168,44 @@
 
                           <v-expand-transition>
                             <div v-if="user[symptom.key] === 'yes'">
-                              <!-- 胸悶痛：合併欄位 + 昏倒情形 + 一般三欄位 -->
-                              <template v-if="symptom.key === 'chestTightnessPain'">
-                                <v-label class="mb-2 d-inline-block">昏倒情形</v-label>
-                                <v-radio-group
-                                  v-model="user.chestTightnessPainSyncope"
-                                  inline
-                                >
-                                  <v-radio label="無" value="none" />
-                                  <v-radio label="昏倒" value="syncope" />
-                                  <v-radio label="快昏倒" value="nearSyncope" />
-                                </v-radio-group>
-
-                                <v-row>
-                                  <v-col cols="12" sm="6">
-                                    <v-text-field
-                                      v-model.number="user[`${symptom.key}DurationValue`]"
-                                      label="發生多久（數值）"
-                                      type="number"
-                                      variant="outlined"
-                                    />
-                                  </v-col>
-                                  <v-col cols="12" sm="6">
-                                    <v-select
-                                      v-model="user[`${symptom.key}DurationUnit`]"
-                                      :items="durationUnits"
-                                      label="單位"
-                                      variant="outlined"
-                                    />
-                                  </v-col>
-                                </v-row>
-
-                                <v-select
-                                  v-model="user[`${symptom.key}Frequency`]"
-                                  :items="frequencyOptions"
-                                  label="發作頻率"
+                              <!-- 胸痛：疼痛位置 -->
+                              <template v-if="symptom.key === 'chestPain'">
+                                <v-text-field
+                                  v-model="user.chestPainLocation"
+                                  label="疼痛位置"
                                   variant="outlined"
+                                  placeholder="例如：胸骨後、左胸、右胸、放射到手臂等"
+                                  clearable
                                 />
                               </template>
 
                               <!-- 心悸 / 暈眩 / 水腫 類型多選 -->
-                              <template v-else-if="['palpitation','dizziness','edema'].includes(symptom.key)">
+                              <template v-if="['palpitation','dizziness','edema'].includes(symptom.key)">
                                 <v-autocomplete
                                   v-if="symptom.key==='palpitation'"
                                   v-model="user[`${symptom.key}Type`]"
                                   :items="palpitationOptions"
                                   label="心悸型態（可複選）"
-                                  chips
-                                  multiple
-                                  variant="outlined"
+                                  chips multiple variant="outlined"
                                 />
                                 <v-autocomplete
                                   v-else-if="symptom.key==='dizziness'"
                                   v-model="user[`${symptom.key}Type`]"
                                   :items="dizzinessOptions"
                                   label="暈眩型態（可複選）"
-                                  chips
-                                  multiple
-                                  variant="outlined"
+                                  chips multiple variant="outlined"
                                 />
                                 <v-autocomplete
                                   v-else-if="symptom.key==='edema'"
                                   v-model="user[`${symptom.key}Type`]"
                                   :items="edemaOptions"
                                   label="水腫部位（可複選）"
-                                  chips
-                                  multiple
-                                  variant="outlined"
+                                  chips multiple variant="outlined"
                                 />
                               </template>
 
                               <!-- 血壓控制不良：專屬欄位 -->
-                              <template v-else-if="symptom.key==='hypertensionPoorControl'">
+                              <template v-if="symptom.key==='hypertensionPoorControl'">
                                 <v-label class="mb-2 d-inline-block">最近血壓值（mmHg）</v-label>
                                 <v-row>
                                   <v-col cols="12" sm="6">
@@ -347,9 +302,7 @@
                           v-model="user.MdeicalHistory1"
                           :items="MdeicalHistory1"
                           label="過去病史1（請進入勾選）"
-                          chips
-                          multiple
-                          variant="outlined"
+                          chips multiple variant="outlined"
                         />
 
                         <!-- 過去病史2 + 勾選後逐項補充 -->
@@ -357,9 +310,7 @@
                           v-model="user.MdeicalHistory2"
                           :items="MdeicalHistory2"
                           label="過去病史2（請進入勾選）"
-                          chips
-                          multiple
-                          variant="outlined"
+                          chips multiple variant="outlined"
                         />
                         <div v-if="user.MdeicalHistory2?.length" class="mt-2">
                           <v-row v-for="d in user.MdeicalHistory2" :key="d" class="mb-1">
@@ -379,9 +330,7 @@
                           v-model="user.FamilyHistory"
                           :items="FamilyHistory"
                           label="家族病史（請進入勾選）"
-                          chips
-                          multiple
-                          variant="outlined"
+                          chips multiple variant="outlined"
                         />
                       </v-expansion-panel-text>
                     </v-expansion-panel>
@@ -426,7 +375,7 @@
                     </div>
                   </v-expand-transition>
 
-                  <!-- 生活背景 -->
+                  <!-- 生活背景（新增區塊） -->
                   <v-divider class="my-6" />
                   <v-label class="mb-2 d-inline-block">生活背景</v-label>
                   <v-row>
@@ -569,9 +518,10 @@ const panelsBasic = ref([0])
 const panelsComplaint = ref([0])
 const panelsHistory = ref([])
 
-/* 主訴群組（胸悶+胸痛 合併為 胸悶痛） */
+/* 主訴 9 群組 */
 const symptomGroups = [
-  { key: 'chestTightnessPain', label: '胸悶痛' },
+  { key: 'chestTightness', label: '胸悶' },
+  { key: 'chestPain', label: '胸痛' },
   { key: 'dyspnea', label: '呼吸喘' },
   { key: 'palpitation', label: '心悸' },
   { key: 'dizziness', label: '暈眩' },
@@ -605,23 +555,20 @@ const user = ref<any>({
   bmi: null,
   bpSys: null,
   bpDia: null,
-  pulseRate: null, // 新增：心跳或脈搏數（次/分）
 
   // 主訴群組通用欄位
-  ...Object.fromEntries(
-    symptomGroups.flatMap(s => [
-      [s.key, 'none'],
-      [`${s.key}DurationValue`, null],
-      [`${s.key}DurationUnit`, null],
-      [`${s.key}Frequency`, null],
-    ])
-  ),
+  ...Object.fromEntries(symptomGroups.flatMap(s => [
+    [s.key, 'none'],
+    [`${s.key}DurationValue`, null],
+    [`${s.key}DurationUnit`, null],
+    [`${s.key}Frequency`, null],
+  ])),
 
   // 特定主訴附加資料
   palpitationType: [],
   dizzinessType: [],
   edemaType: [],
-  chestTightnessPainSyncope: 'none', // 胸悶痛-昏倒情形：none/syncope/nearSyncope
+  chestPainLocation: '',
   hypertensionRecentSys: null,
   hypertensionRecentDia: null,
   hypertensionMedicationAdherence: null, // 'none' | 'regular' | 'irregular'
@@ -631,7 +578,7 @@ const user = ref<any>({
   // 病史
   MdeicalHistory1: [],
   MdeicalHistory2: [],
-  MdeicalHistory2Notes: {} as Record<string, string>,
+  MdeicalHistory2Notes: {} as Record<string, string>, // ★ 新增：過去病史2逐項補充
   FamilyHistory: [],
 
   // 手術史 / 藥物過敏
@@ -641,19 +588,19 @@ const user = ref<any>({
   allergyName: '',
 
   // 生活背景
-  livingStatus: null,
-  educationLevel: null,
+  livingStatus: null,       // '獨居' | '與家人同住'
+  educationLevel: null,     // '無' | ... | '博士'
 
   // 抽菸
-  smokingStatus: 'none',
-  smokeYears: null,
-  smokePerDay: null,
+  smokingStatus: 'none',    // 'none' | 'yes' | 'quit'
+  smokeYears: null,         // number (>0, 一位小數)
+  smokePerDay: null,        // int (>0)
 
   // 喝酒
-  alcoholStatus: 'none',
-  alcoholAmountCc: null,
-  alcoholFrequencyDays: null,
-  alcoholDrinkName: '',
+  alcoholStatus: 'none',    // 'none' | 'yes'
+  alcoholAmountCc: null,    // number (>0)
+  alcoholFrequencyDays: null, // number (>0)
+  alcoholDrinkName: '',     // string
 })
 
 /* 下拉選項（通用） */
@@ -665,7 +612,7 @@ const MdeicalHistory1 = [
   '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
   '消化性潰瘍', '胃食道逆流', 'B型肝炎', 'C型肝炎', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
 ]
-const MdeicalHistory2 = ['心律不整', '慢性肺部疾病', '惡性腫瘤', '其他慢性病']
+const MdeicalHistory2 = ['心律不整', '慢性肺部疾病',  '惡性腫瘤', '其他慢性病']
 const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
 
 /* 驗證規則 */
@@ -692,7 +639,7 @@ const requiredIf = (field:keyof typeof user.value, expected:any) => (v:any) => {
   return true
 }
 
-/* 「其他慢性病」若被勾選則補充必填 */
+/* 「其他慢性病」若被勾選則補充必填（可自行移除） */
 const noteRequiredIfSelected = (tag: string) => (v: any) => {
   return user.value.MdeicalHistory2.includes(tag)
     ? ((v != null && String(v).trim() !== '') || '請補充說明')
@@ -713,7 +660,7 @@ watch(()=>user.value.hypertensionMedicationAdherence, val=>{
 /* 抽菸：切換狀態時清理不需要的欄位（避免殘值） */
 watch(()=>user.value.smokingStatus, s=>{
   if(s==='none'){ user.value.smokeYears=null; user.value.smokePerDay=null }
-  if(s==='quit'){ user.value.smokePerDay=null }
+  if(s==='quit'){ user.value.smokePerDay=null } // quit 不需要每天支數
 })
 
 /* 喝酒：切換無時清空欄位 */
@@ -726,6 +673,7 @@ watch(()=>user.value.alcoholStatus, s=>{
 })
 
 function submitForm(){
+  // 若後端需要結構化：把 MdeicalHistory2 與備註合併
   const MdeicalHistory2WithNotes = user.value.MdeicalHistory2.map((name:string)=>({
     name,
     note: user.value.MdeicalHistory2Notes[name] || ''
