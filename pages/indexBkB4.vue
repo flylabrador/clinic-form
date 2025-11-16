@@ -308,24 +308,24 @@
                       </v-expansion-panel-title>
                       <v-expansion-panel-text>
                         <v-autocomplete
-                          v-model="user.medicalHistory1"
-                          :items="medicalHistory1"
+                          v-model="user.tags1"
+                          :items="sickHistory1"
                           label="過去病史1（請進入勾選）"
                           chips multiple variant="outlined"
                         />
 
                         <!-- 過去病史2 + 勾選後逐項補充 -->
                         <v-autocomplete
-                          v-model="user.medicalHistory2"
-                          :items="medicalHistory2"
+                          v-model="user.tags2"
+                          :items="sickHistory2"
                           label="過去病史2（請進入勾選）"
                           chips multiple variant="outlined"
                         />
-                        <div v-if="user.medicalHistory2?.length" class="mt-2">
-                          <v-row v-for="d in user.medicalHistory2" :key="d" class="mb-1">
+                        <div v-if="user.tags2?.length" class="mt-2">
+                          <v-row v-for="d in user.tags2" :key="d" class="mb-1">
                             <v-col cols="12">
                               <v-text-field
-                                v-model="user.medicalHistory2Notes[d]"
+                                v-model="user.tags2Notes[d]"
                                 :label="`${d}（補充說明）`"
                                 variant="outlined"
                                 clearable
@@ -337,13 +337,13 @@
 
                         <!-- 家族病史：只有惡性腫瘤需要補充說明 -->
                         <v-autocomplete
-                          v-model="user.familyHistory"
-                          :items="familyHistory"
+                          v-model="user.FamilyHistory"
+                          :items="FamilyHistory"
                           label="家族病史（請進入勾選）"
                           chips multiple variant="outlined"
                         />
                         <div
-                          v-if="user.familyHistory?.includes('惡性腫瘤')"
+                          v-if="user.FamilyHistory?.includes('惡性腫瘤')"
                           class="mt-2"
                         >
                           <v-text-field
@@ -508,7 +508,7 @@
                             clearable
                           />
                         </v-col>
-                      </v-row>  
+                      </v-row>
                     </div>
                   </v-expand-transition>
 
@@ -598,10 +598,10 @@ const user = ref<any>({
   otherDescription: '',
 
   // 病史
-  medicalHistory1: [],
-  medicalHistory2: [],
-  medicalHistory2Notes: {} as Record<string, string>,
-  familyHistory: [],
+  tags1: [],
+  tags2: [],
+  tags2Notes: {} as Record<string, string>,
+  FamilyHistory: [],
   familyHistoryNotes: {} as Record<string, string>,
 
   // 手術史 / 藥物過敏
@@ -629,14 +629,14 @@ const user = ref<any>({
 /* 下拉選項（通用） */
 const durationUnits = ['天', '週', '月', '年']
 const frequencyOptions = ['每天', '2~3天一次', '1週一次', '偶爾一次']
-const medicalHistory1 = [
+const sickHistory1 = [
   '高血壓', '心衰竭', '高血脂', '心肌梗塞', '冠狀動脈疾病',
   '瓣膜性心臟病', '週邊動脈阻塞', '心律不整', '心臟節律器', '心臟去顫器',
   '糖尿病', '中風', '慢性腎衰竭', '氣喘', 'COPD',
   '消化性潰瘍', '胃食道逆流', 'B型肝炎', 'C型肝炎', '肝硬化', '甲狀腺亢進', '甲狀腺低下', '貧血',
 ]
-const medicalHistory2 = ['心律不整', '慢性肺部疾病', '惡性腫瘤', '其他慢性病']
-const familyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
+const sickHistory2 = ['心律不整', '慢性肺部疾病', '惡性腫瘤', '其他慢性病']
+const FamilyHistory = ['中風', '冠狀動脈疾病/心肌梗塞', '猝死', '惡性腫瘤']
 
 /* 驗證規則 */
 const oneDecimal = (v:any)=>v===''||v==null||/^(\d+|\d+\.\d)$/.test(String(v))||'僅允許到小數一位'
@@ -664,14 +664,14 @@ const requiredIf = (field:keyof typeof user.value, expected:any) => (v:any) => {
 
 /* 「其他慢性病」被勾選則備註必填 */
 const noteRequiredIfSelected = (tag: string) => (v: any) => {
-  return user.value.medicalHistory2.includes(tag)
+  return user.value.tags2.includes(tag)
     ? ((v != null && String(v).trim() !== '') || '請補充說明')
     : true
 }
 
 /* 家族病史「惡性腫瘤」被勾選則備註必填 */
 const familyNoteRequiredIfSelected = (tag: string) => (v: any) => {
-  return user.value.familyHistory.includes(tag)
+  return user.value.FamilyHistory.includes(tag)
     ? ((v != null && String(v).trim() !== '') || '請補充說明')
     : true
 }
@@ -703,17 +703,17 @@ watch(()=>user.value.alcoholStatus, s=>{
 })
 
 function submitForm(){
-  const medicalHistory2WithNotes = user.value.medicalHistory2.map((name:string)=>({
+  const tags2WithNotes = user.value.tags2.map((name:string)=>({
     name,
-    note: user.value.medicalHistory2Notes[name] || ''
+    note: user.value.tags2Notes[name] || ''
   }))
-  const familyHistoryWithNotes = user.value.familyHistory.map((name:string)=>({
+  const familyHistoryWithNotes = user.value.FamilyHistory.map((name:string)=>({
     name,
     note: user.value.familyHistoryNotes[name] || ''
   }))
   const payload = {
     ...user.value,
-    medicalHistory2WithNotes,
+    tags2WithNotes,
     familyHistoryWithNotes,
   }
   console.log('送出資料：', payload)
